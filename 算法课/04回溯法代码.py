@@ -121,7 +121,7 @@ Bv={u∈V: u>v}  #v比V中的点大的点集合
 
 """
 
-"""
+"""枚举所有团
 procedure all_clique(k):
     if k==0:
         output([])
@@ -134,4 +134,104 @@ procedure all_clique(k):
     for all x in Ck:
         X[k]=x
         all_clique(k+1)
+
+"""
+
+'''
+枚举所有极大团
+Nk =Ax-1 ∩Nk-1   为sk-1中每个顶点的邻接点的交集   如果sk-1中所有点的共同邻接点为空,那么他就是个极大团
+
+
+globao X=(x0,x1,...,xk-1)  #可行解  Ck(k=0,1,...)可扩展空间 
+if k==0:
+    Nk=V   #第一次时，sk-1的邻接点集合交集为全部V
+else:
+    Nk=Axk-1 ∩ Nk-1  #所有可行解的共同邻接点集合
+if Nk=={}: #如果为空,则为极大团
+    output(X)
+if k==0:
+    Ck=V  #第一次时，可行解为全部V
+else:
+    Ck=Axk-1 ∩ Bxk-1  ∩ Ck-1  #可行解为 上一次的可行解与 xk-1的邻接点集合与比xk-1大的点集合的交集
+for all x in Ck:
+    X[k]=x
+    all_max_clique(k+1)
+
+'''
+
+
+
+#三、集合覆盖问题
+'''
+集合R={0,1,...,n-1}  #n个元素
+和R的子集族S,判断S是否包含一个R的覆盖
+即 S'={S1,S2,...,Sm} 使得S1∪S2∪...∪Sm=R #S'中的每个集合都是S中的集合
+且R中的元素在S'中只出现一次
+'''
+
+'''
+方法一
+构造无向图
+当且仅当Si与Sj有交集为空时,在Si与Sj之间连一条边
+若S'是R的一个覆盖,则S'对应必然是Ｇ中的一个极大团。
+找出所有的极大团，然后判断是否满足条件
+'''
+
+'''
+方法二：集合的字典序
+T∈S,T的特征向量 如n=7时  T={0,3,6} 的特征向量是  [1001010]
+T的排名: rank(T)=2^0+2^3+2^6=73
+Su>Sv 当且仅当rank(Su)>rank(Sv)
+
+
+将子集族S进行划分：H0，H1，H2，...，Hm
+Hi是S中包含i，但不包含比i小的元素的子集。
+故现在每次选时
+C'=Axi-1 ∩ Bxi-1  ∩ C'xi-1  #可行解为 上一次的可行解与 xi-1的邻接点集合与比xi-1大的点集合的交集
+Ck=Hk∩C'k
+
+'''
+
+#界限函数
+'''
+求最大值时
+快速得到P(X)的近似值,一个上界 B(X)
+剪枝: P(X)<=B(X)<=optP(X)  当P(x)的上界小于最优解时,剪枝
+
+golbal X optP optX ck
+
+X:可行解
+optP:最优值
+optX:最优解
+ck:可扩展空间
+
+
+procedure backtrack(k):
+if [x0,x1,...,xk-1] is a solution:
+    P=profit(x0,x1,...,xk-1)
+    if P>optP:
+        optP=P
+        optX=[x0,x1,...,xk-1]
+compute Ck
+B=B(x0,x1,...,xk-1)
+for all x ∈Ck:
+    if B<=optP:#剪枝  (在本轮不会剪掉，在X=(x0,x1,...,xk-1,xk)时会剪掉。)
+        return
+    X[k]=x
+    Backtrack(k+1)
+backtrack(0)
+'''
+
+
+
+#四、背包问题
+'''
+01背包问题:(x0,x1,...,xk-1)∈{0,1}^n
+分数背包:xi∈[0,1]
+01背包问题是一个NP问题
+分数背包存在O(nlogn)的贪心算法
+'''
+"""
+贪心,将物品按照单位重量价值大小依次排序,然后放入物品
+如果放入后超过了背包容量,则放入一部分
 """
