@@ -2,12 +2,14 @@ def traceback(v,k,n,X):
     if k==n:        
         global answer
         print(X)    
-        answer.append(X[:])
-        # difference=[]
-        # for i in X:
-        #     for j in X:
-        #         difference.append((i-j+v)%v)
-        # print(difference,len(difference))
+        difference=[]
+        for i in X:
+            for j in X:
+                difference.append((i-j+v)%v)
+        if len(set(difference))==len(difference)-3: #没有重复的
+            answer.append(X[:])
+            print(X)
+        return
     else:
         difference=[]
         for i in X:
@@ -30,7 +32,13 @@ def difference_packing(v,n):
     global answer
     answer=[]
     traceback(v,0,n,[])
+    answer=[sorted(i) for i in answer]
+    answer=set([tuple(i) for i in answer])
+    print(answer,len(answer))
+    
     # print("(%d,%d) answer: %s"%(v,n,str(answer)))
 
-# difference_packing(13, 4)
-difference_packing(31, 6)
+difference_packing(13, 4)
+# difference_packing(31, 6)
+
+
