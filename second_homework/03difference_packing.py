@@ -39,6 +39,8 @@ def difference_packing(v,n):
     # print("(%d,%d) answer: %s"%(v,n,str(answer)))
 
 difference_packing(13, 4)
-# difference_packing(31, 6)
+difference_packing(21, 5)
+difference_packing(31, 6)
+difference_packing(48, 7)
 
 

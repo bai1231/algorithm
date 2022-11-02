@@ -10,9 +10,15 @@ def add_chain(chains):
     else:
         Ck=[] #计算可扩展空间
         for i in chains[::-1]:
-            for j in chains[::-1]:
-                if (i+j)<=target and (i+j)>chains[-1] and (len(chains)+1)<len(opt_chains) and (i+j) not in Ck :
-                    Ck.append(i+j)
+            j=chains[-1]+i
+            if (j)<=target and (j)>chains[-1] and (len(chains)+1)<len(opt_chains) and (j) not in Ck :
+                if len(chains)!=target+1: #找到了一个解
+                    sum=j
+                    for _ in range(len(opt_chains)-len(chains)-1):
+                        sum*=2
+                    if sum<target:
+                        continue
+                Ck.append(j)
         for i in Ck:
             chains.append(i)
             add_chain(chains)
@@ -30,5 +36,5 @@ def find_shortest_chains(target):
     
     print(opt_chains)
 if __name__=='__main__':
-    target=127
+    target=607
     find_shortest_chains(target)
